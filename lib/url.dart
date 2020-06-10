@@ -1,5 +1,5 @@
 class URLs {
-  static final String serverURL = 'https://qatar.qabuss.com';
+  static final String serverURL = 'https://qabuss.com/';
   static final String about = '/api/qab_page/ABT10023';
   static final String locate = '/api/qab_page/LCT10023';
   static final String terms = '/api/qab_page/TRM10023';

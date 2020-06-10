@@ -107,7 +107,7 @@ class Data {
     },
   ];
 
-  static get serverURL => 'https://qatar.qabuss.com';
+  static get serverURL => 'https://qabuss.com/';
 
   static Map<String, String> get apis => {
         'ABOUT': '/api/qab_page/ABT10023',
