@@ -26,6 +26,7 @@ import 'package:qabus/services/localization.dart';
 import 'package:qabus/state_management/scoped_panel_ctrl.dart';
 import 'package:qabus/url.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:geocoder/geocoder.dart';
 
 class ExplorePage extends StatefulWidget {
   ExplorePage(Key key) : super(key: key);
@@ -46,7 +47,7 @@ class _ExplorePageState extends State<ExplorePage> {
   List<Event> _events = [];
   List<BusinessListItem> _featuredBusiness = [];
   bool _isDataLoading = false;
-
+  String locationName = '';
   Widget _buildTopSection() {
     return Container(
       height: 250,
@@ -326,13 +327,12 @@ class _ExplorePageState extends State<ExplorePage> {
   Widget _buildBestOffersItem(BuildContext context, int index) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (BuildContext context) {
-            return OfferDetail(_offers[index]);
-          })
-        );
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext context) {
+          return OfferDetail(_offers[index]);
+        }));
       },
-          child: OfferItem(
+      child: OfferItem(
         offer: _offers[index],
       ),
     );
@@ -463,10 +463,16 @@ class _ExplorePageState extends State<ExplorePage> {
       child: Row(
         children: <Widget>[
           Text(
-            'Al Messila',
-            style: Theme.of(context).textTheme.display4.copyWith(fontSize: 20 , color: Colors.white),
+            locationName,
+            style: Theme.of(context)
+                .textTheme
+                .display4
+                .copyWith(fontSize: 20, color: Colors.white),
           ),
-          Icon(Icons.arrow_drop_down , color: Colors.white,)
+          Icon(
+            Icons.arrow_drop_down,
+            color: Colors.white,
+          )
         ],
       ),
     );
@@ -505,13 +511,13 @@ class _ExplorePageState extends State<ExplorePage> {
       _isLoading = true;
       _hasError = false;
     });
-    // try {
+    try {
       final auth = Provider.of<AccountService>(context);
       Map<String, dynamic> data;
       LocationData currentLocation;
       Location location = new Location();
 
-      // currentLocation = await location.getLocation();
+      currentLocation = await location.getLocation();
 
       double lat = currentLocation?.latitude;
       double lng = currentLocation?.longitude;
@@ -524,11 +530,15 @@ class _ExplorePageState extends State<ExplorePage> {
           lng,
         );
       }
+      final city = await Geocoder.local
+          .findAddressesFromCoordinates(Coordinates(lat, lng))
+          .then((value) => value.first.countryName);
+          print(city);
       if (data == null) {
         setState(() {
           _isLoading = false;
           _hasError = true;
-        }); 
+        });
         return null;
       }
       setState(() {
@@ -541,17 +551,18 @@ class _ExplorePageState extends State<ExplorePage> {
         _featuredBusiness = data['featuredBusiness'];
         _isLoading = false;
         _hasError = false;
+        locationName = city;
       });
-    // } catch (e) {
-    //   print(e);
-    //   if (e.code == 'PERMISSION_DENIED') {
-    //     print('permission denied');
-    //   }
-    //   setState(() {
-    //     _isLoading = false;
-    //     _hasError = true;
-    //   });
-    // }
+    } catch (e) {
+      print(e);
+      if (e.code == 'PERMISSION_DENIED') {
+        print('permission denied');
+      }
+      setState(() {
+        _isLoading = false;
+        _hasError = true;
+      });
+    }
   }
 
   @override
@@ -567,14 +578,17 @@ class _ExplorePageState extends State<ExplorePage> {
             actionsIconTheme: IconThemeData(color: Colors.black),
             title: _buildLocationSelector(context),
             leading: IconButton(
-              icon: Icon(Icons.dehaze , color: Colors.white,),
+              icon: Icon(
+                Icons.dehaze,
+                color: Colors.white,
+              ),
               onPressed: () {
                 modal.scaffoldKey.currentState.openDrawer();
               },
             ),
             actions: <Widget>[
               IconButton(
-                icon: Icon(Icons.notifications , color: Colors.white),
+                icon: Icon(Icons.notifications, color: Colors.white),
                 onPressed: () {},
               ),
             ],
