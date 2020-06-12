@@ -11,6 +11,7 @@ class News {
   final String imageURL;
   final String author;
   final int category;
+  final String date;
 
   News({
     @required this.author,
@@ -23,6 +24,7 @@ class News {
     @required this.summeryAr,
     @required this.title,
     @required this.titleAr,
+    @required this.date
   })  : assert(author != null),
         assert(category != null),
         assert(description != null),
@@ -32,5 +34,7 @@ class News {
         assert(summery != null),
         assert(summeryAr != null),
         assert(title != null),
+        assert(date != null),
         assert(titleAr != null);
 }
+

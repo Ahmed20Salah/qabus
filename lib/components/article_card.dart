@@ -6,14 +6,13 @@ import 'package:qabus/url.dart';
 
 class ArticleCard extends StatelessWidget {
   final News newsItem;
-  
 
   ArticleCard(this.newsItem);
 
   Widget _buildCardHeader(BuildContext context) {
     final appLanguage = Provider.of<AppLanguage>(context);
     bool isArabic = false;
-    if(appLanguage.appLocal != Locale('en')) {
+    if (appLanguage.appLocal != Locale('en')) {
       isArabic = true;
     }
     return Container(
@@ -58,7 +57,7 @@ class ArticleCard extends StatelessWidget {
                     ),
                     SizedBox(width: 2),
                     Text(
-                      'no Date',
+                      '${newsItem.date}',
                       style: Theme.of(context)
                           .textTheme
                           .overline
@@ -88,15 +87,74 @@ class ArticleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appLanguage = Provider.of<AppLanguage>(context);
+
+    bool isArabic = false;
+    if (appLanguage.appLocal != Locale('en')) {
+      isArabic = true;
+    }
+    return Column(
+      children: <Widget>[_buildCardHeader(context), _buildCardBody(context)],
+    );
+  }
+}
+
+class RelatedCard extends StatelessWidget {
+  final News newsItem;
+
+  RelatedCard(this.newsItem);
+
+  @override
+  Widget build(BuildContext context) {
+    final appLanguage = Provider.of<AppLanguage>(context);
+
+    bool isArabic = false;
+    if (appLanguage.appLocal != Locale('en')) {
+      isArabic = true;
+    }
     return Card(
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       margin: EdgeInsets.only(top: 10, left: 15, right: 15),
-      child: Column(
-        children: <Widget>[
-          _buildCardHeader(context),
-          _buildCardBody(context),
-        ],
+      child: Container(
+        height: 150.0,
+        width: MediaQuery.of(context).size.width - 30.0,
+        child: Row(
+          children: <Widget>[
+            SizedBox(
+              width: 10.0,
+            ),
+            Container(
+              width: 130.0,
+              height: 100.0,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: FadeInImage(
+                  image: NetworkImage(URLs.serverURL + newsItem.imageURL),
+                  placeholder: AssetImage('assets/images/article.png'),
+                  height: 140,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 10.0,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 5),
+              alignment: Alignment.center,
+              height: 120.0,
+              width: MediaQuery.of(context).size.width - 190.0,
+              child: Text(
+                isArabic ? newsItem.titleAr : newsItem.title,
+                softWrap: true,
+                maxLines: 3,
+                overflow: TextOverflow.visible,
+                style: TextStyle(fontWeight: FontWeight.bold, height: 2),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

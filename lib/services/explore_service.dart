@@ -402,12 +402,13 @@ class ExplorePageService {
     double lat,
     double lng,
   ) async {
-    try {
+    // try {
       final storage = new FlutterSecureStorage();
       final String savedTopics = await storage.read(key: 'topics');
       if (savedTopics == null) {
         return null;
       }
+      print(savedTopics);
       final List<int> topics =
           savedTopics.split(',').map((i) => int.parse(i)).toList();
 
@@ -424,13 +425,14 @@ class ExplorePageService {
       }
       final jsonData = json.decode(response.body);
       return _createHomePageContent(jsonData);
-    } catch (e) {
-      print(e);
-      return null;
-    }
+    // } catch (e) {
+    //   print(e);
+    //   return null;
+    // }
   }
 
   static Map<String, dynamic> _createHomePageContent(jsonData) {
+    // print(jsonData);
     final List<SliderModal> sliders = _createSlidersList(jsonData['Slider']);
     final List<Category> categories = _createCategories(jsonData['Category']);
     final List<BusinessListItem> recomendedBusinesses =

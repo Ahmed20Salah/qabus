@@ -13,7 +13,7 @@ class URLs {
   static final String businessByArea = '/api/qab_categories_business_post/';
   static final String newsCategories = '/api/qab_news_categories';
   static final String news = '/api/qab_news';
-  static final String newsSearch = '/api/qab_news_search/';
+  static final String newsSearch = '/api/qab_news_sort/';
   static final String newsFromCategory = '/api/qab_news_categories/';
   static final String allOffers = '/api/qab_offers';
   static final String sortOffers = '/api/qab_offer_sort';

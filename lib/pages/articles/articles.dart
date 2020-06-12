@@ -247,10 +247,10 @@ class _ArticlesPageState extends State<ArticlesPage> {
 
   Widget _buildCategoryListButton(String text, bool isArabic) {
     Color color;
-    
+
     if (_currentCategory != null) {
       final String name =
-        isArabic ? _currentCategory.nameAr : _currentCategory.name;
+          isArabic ? _currentCategory.nameAr : _currentCategory.name;
       color = name == text ? Theme.of(context).accentColor : Colors.black;
     } else {
       color = Colors.black;
@@ -269,8 +269,10 @@ class _ArticlesPageState extends State<ArticlesPage> {
   }
 
   Widget _buildListView() {
-    if(_filteredNews.length < 1) {
-      return Center(child: Text('No News Found.'),);
+    if (_filteredNews.length < 1) {
+      return Center(
+        child: Text('No News Found.'),
+      );
     }
 
     return ListView.builder(

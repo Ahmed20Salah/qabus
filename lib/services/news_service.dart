@@ -29,6 +29,7 @@ class NewsService {
     try {
       final response = await http.get(URLs.serverURL + URLs.news);
       final jsonData = (json.decode(response.body))['data'];
+      print(jsonData);
       return createNewsListFromList(jsonData);
     } catch (e) {
       print(e);
@@ -38,20 +39,26 @@ class NewsService {
 
   static List<News> createNewsListFromList(jsonData) {
     List<News> news = [];
-    jsonData.forEach((item) {
-      news.add(News(
-        author: item['name'],
-        category: int.parse(item['category']),
-        description: item['descriptionEn'],
-        descriptionAr: item['descriptionArb'],
-        id: item['registerid'],
-        imageURL: item['image'],
-        summery: item['summeryEn'],
-        summeryAr: item['summeryArb'],
-        title: item['headingEn'],
-        titleAr: item['headingArb'],
-      ));
-    });
+    jsonData.forEach(
+      (item) {
+        news.add(
+          News(
+              author: item['name'],
+              category: int.parse(item['category']),
+              description:
+                  item['descriptionEn'] == null ? ' ' : item['descriptionEn'],
+              descriptionAr:
+                  item['descriptionArb'] == null ? ' ' : item['descriptionArb'],
+              id: item['registerid'],
+              imageURL: item['image'],
+              summery: item['summeryEn'],
+              summeryAr: item['summeryArb'],
+              title: item['headingEn'],
+              titleAr: item['headingArb'],
+              date: item['created_at'].split(' ')[0]),
+        );
+      },
+    );
     return news;
   }
 
@@ -71,10 +78,12 @@ class NewsService {
   }
 
   static Future<List<News>> searchNews(String text) async {
+    print(text);
     try {
-      final response =
-          await http.get(URLs.serverURL + URLs.newsSearch + '$text');
+      final response = await http
+          .post('https://qabuss.com/api/qab_news_sort?id=1&search=HMC');
       final jsonData = (json.decode(response.body));
+      print(jsonData);
       return createNewsListFromList(jsonData['news']);
     } catch (e) {
       print(e);

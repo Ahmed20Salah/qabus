@@ -389,7 +389,7 @@ class _ExplorePageState extends State<ExplorePage> {
       return Container();
     }
     return Container(
-      height: 180,
+      height: 185,
       margin: EdgeInsets.only(top: 10),
       child: Column(
         children: <Widget>[
@@ -464,9 +464,9 @@ class _ExplorePageState extends State<ExplorePage> {
         children: <Widget>[
           Text(
             'Al Messila',
-            style: Theme.of(context).textTheme.display4.copyWith(fontSize: 20),
+            style: Theme.of(context).textTheme.display4.copyWith(fontSize: 20 , color: Colors.white),
           ),
-          Icon(Icons.arrow_drop_down)
+          Icon(Icons.arrow_drop_down , color: Colors.white,)
         ],
       ),
     );
@@ -505,7 +505,7 @@ class _ExplorePageState extends State<ExplorePage> {
       _isLoading = true;
       _hasError = false;
     });
-    try {
+    // try {
       final auth = Provider.of<AccountService>(context);
       Map<String, dynamic> data;
       LocationData currentLocation;
@@ -542,15 +542,16 @@ class _ExplorePageState extends State<ExplorePage> {
         _isLoading = false;
         _hasError = false;
       });
-    } catch (e) {
-      if (e.code == 'PERMISSION_DENIED') {
-        print('permission denied');
-      }
-      setState(() {
-        _isLoading = false;
-        _hasError = true;
-      });
-    }
+    // } catch (e) {
+    //   print(e);
+    //   if (e.code == 'PERMISSION_DENIED') {
+    //     print('permission denied');
+    //   }
+    //   setState(() {
+    //     _isLoading = false;
+    //     _hasError = true;
+    //   });
+    // }
   }
 
   @override
@@ -560,23 +561,23 @@ class _ExplorePageState extends State<ExplorePage> {
       builder: (BuildContext context, Widget child, ScopedController modal) {
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).accentColor,
             brightness: Brightness.light,
             iconTheme: IconThemeData(color: Colors.black),
             actionsIconTheme: IconThemeData(color: Colors.black),
+            title: _buildLocationSelector(context),
             leading: IconButton(
-              icon: Icon(Icons.dehaze),
+              icon: Icon(Icons.dehaze , color: Colors.white,),
               onPressed: () {
                 modal.scaffoldKey.currentState.openDrawer();
               },
             ),
             actions: <Widget>[
-              // IconButton(
-              //   icon: Icon(Icons.notifications),
-              //   onPressed: () {},
-              // ),
+              IconButton(
+                icon: Icon(Icons.notifications , color: Colors.white),
+                onPressed: () {},
+              ),
             ],
-            // title: _buildLocationSelector(context),
           ),
           body: _isLoading
               ? Center(

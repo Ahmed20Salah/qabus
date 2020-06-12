@@ -52,7 +52,7 @@ class _ArticlePageState extends State<ArticlePage> {
     widgets.addAll(
       _relatedNews.map((item) {
         return GestureDetector(
-          child: ArticleCard(item),
+          child: RelatedCard(item),
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
@@ -95,9 +95,15 @@ class _ArticlePageState extends State<ArticlePage> {
           Container(
             margin: EdgeInsets.symmetric(vertical: 10),
             padding: EdgeInsets.symmetric(horizontal: 15),
-            child: Text(
-              'no Date',
-              style: Theme.of(context).textTheme.overline,
+            child: Row(
+              children: <Widget>[
+                Icon(Icons.calendar_today , size: 20,color: Theme.of(context).textTheme.overline.color,),
+                SizedBox(width: 5,),
+                Text(
+                   widget._news.date,
+                  style: Theme.of(context).textTheme.overline,
+                ),
+              ],
             ),
           ),
           Padding(
@@ -106,6 +112,7 @@ class _ArticlePageState extends State<ArticlePage> {
               data: widget._news.description,
             ),
           ),
+          Divider(color: Colors.grey,),
           ..._buildRelatedNews(),
         ],
       ),

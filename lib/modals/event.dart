@@ -12,18 +12,15 @@ class Event {
   final String phone;
   final String email;
   final String imageURL;
-  final String category;
   final double lat;
   final double lng;
   final String address;
   final String addressAr;
 
-
   Event({
     @required this.address,
     @required this.addressAr,
     @required this.amount,
-    @required this.category,
     @required this.description,
     @required this.descriptionAr,
     @required this.email,
@@ -37,8 +34,8 @@ class Event {
     @required this.title,
     @required this.titleAr,
   })  : assert(address != null),
+        assert(addressAr != null),
         assert(amount != null),
-        assert(category != null),
         assert(description != null),
         assert(descriptionAr != null),
         assert(email != null),

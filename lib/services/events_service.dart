@@ -10,6 +10,7 @@ class EventsService {
       final String url = URLs.serverURL + URLs.allEvents;
       final response = await http.get(url);
       final jsonData = (json.decode(response.body));
+      print(jsonData);
       final List<Event> offers = createEventItemList(jsonData['data']);
       return offers;
     } catch (e) {
@@ -32,14 +33,16 @@ class EventsService {
   }
 
   static List<Event> createEventItemList(jsonData) {
+    // print(jsonData);
     List<Event> events = [];
-    jsonData.forEach((item) {
+    print(jsonData);
+    for (var item in jsonData) {
+      print(item['category']);
       events.add(
         Event(
-          address: item['locationEn'],
+          address: item['location'],
           addressAr: item['locationArb'],
           amount: double.parse(item['amount']),
-          category: item['category'],
           description: item['descriptionEn'],
           descriptionAr: item['descriptionArb'],
           email: item['email'],
@@ -54,7 +57,8 @@ class EventsService {
           titleAr: item['headingArb'],
         ),
       );
-    });
+    }
+
     return events;
   }
 }
